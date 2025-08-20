@@ -153,6 +153,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               // Optionally, navigate to another screen or show success message
                             } catch (e) {
                               // Handle sign up error
+                              print('Sign up failed: $e');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Sign up failed: $e')),
                               );

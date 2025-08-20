@@ -79,4 +79,14 @@ class AuthService {
       throw Exception('Failed to send password reset email: $e');
     }
   }
+
+  static Future<void> signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushNamedAndRemoveUntil(context, '/signin', (route) => false);
+    } catch (e) {
+      // Handle sign-out error
+      throw Exception('Failed to sign out: $e');
+    }
+  }
 }

@@ -24,9 +24,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: FirebaseAuth.instance.currentUser != null
-          ? '/signin'
-          : '/chat',
+      initialRoute: FirebaseAuth.instance.currentUser?.uid != null
+          ? '/chat'
+          : '/signin',
       routes: {
         '/signin': (context) => SigninScreen(),
         '/signup': (context) => SignupScreen(),

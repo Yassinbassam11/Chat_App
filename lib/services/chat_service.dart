@@ -2,6 +2,17 @@ import 'package:chat_app/models/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatService {
+  static Future<void> deleteMessage(String messageId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(messageId)
+          .delete();
+    } catch (e) {
+      throw Exception('Failed to delete message: $e');
+    }
+  }
+
   static Stream<List<ChatModel>> getChatStream() {
     try {
       final snapshots = FirebaseFirestore.instance

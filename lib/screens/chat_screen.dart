@@ -1,5 +1,6 @@
 import 'package:chat_app/main.dart';
 import 'package:chat_app/models/chat_model.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,6 +34,13 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               // Handle logout action
+              try {
+                AuthService.signOut(context);
+              } catch (e) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Logout failed: $e')));
+              }
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/signin',
@@ -48,7 +56,6 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Chat messages area can go here (e.g., Expanded(child: ListView(...)))
             Expanded(
               child: StreamBuilder<List<ChatModel>>(
                 stream: viewModel.chatStream,
@@ -68,6 +75,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         .data!
                         .length, // Replace with your actual message count
                     itemBuilder: (context, index) {
+                      final isMe =
+                          snapshot.data![index].senderId ==
+                          FirebaseAuth.instance.currentUser!.uid;
                       return MessageBubble(message: snapshot.data![index]);
                     },
                   );
@@ -93,7 +103,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Type your message...',
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30.0),
                             borderSide: BorderSide.none,
@@ -103,6 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   Container(
+                    margin: const EdgeInsets.only(right: 8.0),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(30.0),
