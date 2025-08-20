@@ -5,10 +5,12 @@ import 'package:chat_app/screens/forget_password_screen.dart';
 import 'package:chat_app/screens/signin_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
 import 'package:chat_app/screens/verify_screen.dart';
+import 'package:chat_app/view_model/view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+ViewModel viewModel = ViewModel();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

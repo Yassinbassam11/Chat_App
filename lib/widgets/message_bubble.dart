@@ -1,8 +1,10 @@
+import 'package:chat_app/models/chat_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({super.key});
+  const MessageBubble({super.key, required this.message});
+  final ChatModel message;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class MessageBubble extends StatelessWidget {
             bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
           ),
         ),
-        child: Text('Message', style: TextStyle(color: Colors.white)),
+        child: Text(message.message, style: TextStyle(color: Colors.white)),
       ),
     );
   }
