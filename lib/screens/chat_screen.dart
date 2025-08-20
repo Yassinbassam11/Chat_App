@@ -3,7 +3,6 @@ import 'package:chat_app/models/chat_model.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -75,6 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         .data!
                         .length, // Replace with your actual message count
                     itemBuilder: (context, index) {
+                      // ignore: unused_local_variable
                       final isMe =
                           snapshot.data![index].senderId ==
                           FirebaseAuth.instance.currentUser!.uid;
