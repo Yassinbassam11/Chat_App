@@ -1,4 +1,5 @@
 import 'package:chat_app/models/chat_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -8,7 +9,7 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool? isMe = true; // This should be determined based on the message sender
+    bool? isMe = message.senderId == FirebaseAuth.instance.currentUser!.uid;
     return Align(
       alignment: isMe! ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
