@@ -44,4 +44,23 @@ class ChatService {
 
     viewModel.users.value = result;
   }
+
+  static Future<bool> doesPrivateChatExist(String chatId) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("privateChats")
+        .doc(chatId)
+        .get();
+    return snapshot.exists;
+  }
+
+  static Future<void> createPrivateChat(String chatId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("privateChats")
+          .doc(chatId)
+          .set({});
+    } catch (e) {
+      throw Exception('Failed to create private chat: $e');
+    }
+  }
 }

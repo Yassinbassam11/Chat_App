@@ -2,6 +2,7 @@
 
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/screens/forget_password_screen.dart';
+import 'package:chat_app/screens/private_chat_screen.dart';
 import 'package:chat_app/screens/signin_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
 import 'package:chat_app/screens/usersList_screen.dart';
@@ -35,6 +36,7 @@ class MainApp extends StatelessWidget {
         '/verify': (context) => VerifyScreen(),
         '/forgot_password': (context) => ForgotPasswordScreen(),
         '/users': (context) => UsersListScreen(),
+        '/private_chat': (context) => PrivateChatScreen(),
       },
     );
   }
