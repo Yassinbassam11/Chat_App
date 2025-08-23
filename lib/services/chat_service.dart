@@ -5,6 +5,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatService {
+  static Future<void> sendMessage(ChatModel model) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(model.id)
+          .set(model.toJson());
+    } catch (e) {
+      throw Exception('Failed to send message: $e');
+    }
+  }
+
+  static Future<void> deletePrivateMessage(
+    String chatId,
+    String messageId,
+  ) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('privateChats')
+          .doc(chatId)
+          .collection('messages')
+          .doc(messageId)
+          .delete();
+    } catch (e) {
+      throw Exception('Failed to delete private message: $e');
+    }
+  }
+
   static Future<void> deleteMessage(String messageId) async {
     try {
       await FirebaseFirestore.instance
@@ -24,7 +51,9 @@ class ChatService {
           .snapshots();
       return snapshots.map((snapshot) {
         return snapshot.docs.map((doc) {
-          return ChatModel.fromJson(doc.data());
+          final data = doc.data();
+          data['id'] = doc.id;
+          return ChatModel.fromJson(data);
         }).toList();
       });
     } catch (e) {
@@ -61,6 +90,38 @@ class ChatService {
           .set({});
     } catch (e) {
       throw Exception('Failed to create private chat: $e');
+    }
+  }
+
+  static Future<void> sendPrivateMessage(String chatId, ChatModel model) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('privateChats')
+          .doc(chatId)
+          .collection('messages')
+          .add(model.toJson());
+    } catch (e) {
+      throw Exception('Failed to send message: $e');
+    }
+  }
+
+  static Stream<List<ChatModel>> getPrivateChatMessages(String chatId) {
+    try {
+      return FirebaseFirestore.instance
+          .collection('privateChats')
+          .doc(chatId)
+          .collection('messages')
+          .orderBy('timestamp')
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs.map((doc) {
+              final data = doc.data();
+              data['id'] = doc.id;
+              return ChatModel.fromJson(data);
+            }).toList();
+          });
+    } catch (e) {
+      throw Exception('Failed to fetch private chat messages: $e');
     }
   }
 }

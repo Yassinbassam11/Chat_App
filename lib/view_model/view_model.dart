@@ -1,7 +1,6 @@
 import 'package:chat_app/models/chat_model.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/services/chat_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class ViewModel {
@@ -14,11 +13,5 @@ class ViewModel {
       print("stream loaded");
       print(event);
     });
-  }
-  Future<void> sendMessage(ChatModel model) async {
-    await FirebaseFirestore.instance
-        .collection('chats')
-        .doc(model.id)
-        .set(model.toJson());
   }
 }

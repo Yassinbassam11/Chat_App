@@ -24,10 +24,18 @@ class UserChatCard extends StatelessWidget {
         }
         final doesChatExist = await ChatService.doesPrivateChatExist(chatId);
         if (doesChatExist) {
-          Navigator.pushNamed(context, '/private_chat', arguments: chatId);
+          Navigator.pushNamed(
+            context,
+            '/private_chat',
+            arguments: {'chatId': chatId, 'userModel': user},
+          );
         } else {
           await ChatService.createPrivateChat(chatId);
-          Navigator.pushNamed(context, '/private_chat', arguments: chatId);
+          Navigator.pushNamed(
+            context,
+            '/private_chat',
+            arguments: {'chatId': chatId, 'userModel': user},
+          );
         }
       },
       child: ListTile(

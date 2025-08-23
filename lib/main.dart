@@ -1,5 +1,6 @@
 // import 'package:chatapp/screens/signin_screen.dart';
 
+import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/screens/forget_password_screen.dart';
 import 'package:chat_app/screens/private_chat_screen.dart';
@@ -36,7 +37,21 @@ class MainApp extends StatelessWidget {
         '/verify': (context) => VerifyScreen(),
         '/forgot_password': (context) => ForgotPasswordScreen(),
         '/users': (context) => UsersListScreen(),
-        '/private_chat': (context) => PrivateChatScreen(),
+        //'/private_chat': (context) => PrivateChatScreen(),
+      },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/private_chat':
+            final arguments = settings.arguments as Map<String, dynamic>;
+            final chatId = arguments['chatId'] as String?;
+            final userModel = arguments['userModel'] as UserModel?;
+            return MaterialPageRoute(
+              builder: (context) =>
+                  PrivateChatScreen(chatId: chatId, userModel: userModel),
+            );
+          default:
+            return null;
+        }
       },
     );
   }

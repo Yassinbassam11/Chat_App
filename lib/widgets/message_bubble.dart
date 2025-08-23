@@ -6,8 +6,15 @@ import 'package:flutter/rendering.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({super.key, required this.message});
+  const MessageBubble({
+    super.key,
+    required this.message,
+    this.isPrivate = false,
+    this.chatId,
+  });
   final ChatModel message;
+  final bool isPrivate;
+  final String? chatId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +26,7 @@ class MessageBubble extends StatelessWidget {
     bool isMe = message.senderId == currentUid;
     return GestureDetector(
       onLongPress: () {
-        // Handle long press (e.g., show options to delete or forward the message)
         if (isMe) {
-          // Show delete option only for messages sent by the current user
           showDialog(
             context: context,
             builder: (context) {
@@ -38,7 +43,14 @@ class MessageBubble extends StatelessWidget {
                   TextButton(
                     onPressed: () async {
                       try {
-                        await ChatService.deleteMessage(message.id);
+                        if (isPrivate && chatId != null) {
+                          await ChatService.deletePrivateMessage(
+                            chatId!,
+                            message.id,
+                          );
+                        } else {
+                          await ChatService.deleteMessage(message.id);
+                        }
                         Navigator.of(context).pop();
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(

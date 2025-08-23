@@ -1,6 +1,7 @@
 import 'package:chat_app/main.dart';
 import 'package:chat_app/models/chat_model.dart';
 import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/services/chat_service.dart';
 import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       final isMe =
                           messages[index].senderId ==
                           FirebaseAuth.instance.currentUser!.uid;
-                      return MessageBubble(message: messages[index]);
+                      return MessageBubble(
+                        message: messages[index],
+                        isPrivate: false,
+                        chatId: null,
+                      );
                     },
                   );
                 },
@@ -129,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon: Icon(Icons.send, color: Colors.white),
                       onPressed: () {
                         // Handle send message action
-                        viewModel.sendMessage(
+                        ChatService.sendMessage(
                           ChatModel(
                             message: _messageController.text,
                             senderId: FirebaseAuth.instance.currentUser!.uid,
