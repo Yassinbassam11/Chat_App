@@ -4,6 +4,7 @@ import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/screens/forget_password_screen.dart';
 import 'package:chat_app/screens/signin_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
+import 'package:chat_app/screens/usersList_screen.dart';
 import 'package:chat_app/screens/verify_screen.dart';
 import 'package:chat_app/view_model/view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,7 @@ class MainApp extends StatelessWidget {
         '/chat': (context) => ChatScreen(),
         '/verify': (context) => VerifyScreen(),
         '/forgot_password': (context) => ForgotPasswordScreen(),
+        '/users': (context) => UsersListScreen(),
       },
     );
   }

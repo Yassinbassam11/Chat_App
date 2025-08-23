@@ -30,6 +30,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         actions: [
           IconButton(
+            icon: Icon(Icons.people, color: Colors.white),
+            onPressed: () {
+              // Handle settings action
+              Navigator.pushNamed(context, '/users');
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               // Handle logout action
@@ -63,22 +70,23 @@ class _ChatScreenState extends State<ChatScreen> {
                     return Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  final messages = snapshot.data ?? [];
+                  if (messages.isEmpty) {
+                    return Center(child: Text('No messages yet.'));
                   }
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(
                       vertical: 12.0,
                       horizontal: 8.0,
                     ),
-                    itemCount: snapshot
-                        .data!
-                        .length, // Replace with your actual message count
+                    itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      // ignore: unused_local_variable
                       final isMe =
-                          snapshot.data![index].senderId ==
+                          messages[index].senderId ==
                           FirebaseAuth.instance.currentUser!.uid;
-                      return MessageBubble(message: snapshot.data![index]);
+                      return MessageBubble(message: messages[index]);
                     },
                   );
                 },

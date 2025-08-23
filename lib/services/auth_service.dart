@@ -1,3 +1,4 @@
+import 'package:chat_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -57,10 +58,15 @@ class AuthService {
     try {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      final userModel = UserModel(
+        email: email,
+        username: username,
+        id: credential.user!.uid,
+      );
       await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({'username': username, 'email': email});
+          .set(userModel.toJson());
       if (credential.user != null) {
         // User successfully created
         await credential.user!.updateProfile(displayName: username);
